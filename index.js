@@ -1,22 +1,22 @@
-const mineflayer = require('mineflayer');
-const express = require('express');
+const mineflayer = require('mineflayer')
 
-function createBot() {
-  const bot = mineflayer.createBot({
-    host: 'HEROBRINESMP20-CMEK.aternos.me',
-    port: 25565,
-    username: '123nichryq',
-  });
-
-  bot.on('spawn', () => console.log('✅ Bot joined the server!'));
-  bot.on('end', () => {
-    console.log('❌ Disconnected—reconnecting...');
-    setTimeout(createBot, 10000);
-  });
-  bot.on('error', err => console.log('⚠️ Bot error:', err.code || err.message));
+const options = {
+  host: 'zaphkiel_dal.aternos.me',
+  port: 25565,
+  username: '123nickryq'
 }
-createBot();
 
-const app = express();
-app.get('/', (req, res) => res.send('✅ Bot is running!'));
-app.listen(3000, () => console.log('🌐 Web server running on port 3000'));
+function start () {
+  const bot = mineflayer.createBot(options)
+
+  bot.on('spawn', () => console.log('Spawned'))
+  bot.on('kicked', (reason) => console.log('Kicked:', reason))
+  bot.on('error', (err) => console.log('Error:', err))
+
+  bot.on('end', () => {
+    console.log('Disconnected. Reconnecting in 30s...')
+    setTimeout(start, 30_000)
+  })
+}
+
+start()
